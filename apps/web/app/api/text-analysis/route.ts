@@ -5,7 +5,7 @@ import {
   HttpStatus,
   createResponse,
   createErrorResponse,
-} from "@repo/utils/api";
+} from "@repo/ui/lib/api";
 
 // Define the schema for validating the input using Zod
 const InputSchema = z.object({

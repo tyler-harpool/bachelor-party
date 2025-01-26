@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
-    "@repo/utils": "workspace:^",
     "mongoose": "^8.9.5",
     "natural": "^8.0.1",
     "next": "^15.1.0",

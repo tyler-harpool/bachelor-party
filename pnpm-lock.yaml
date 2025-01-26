@@ -23,9 +23,6 @@ importers:
       '@repo/ui':
         specifier: workspace:^
         version: link:../../packages/ui
-      '@repo/utils':
-        specifier: workspace:^
-        version: link:../../packages/utils
       '@tauri-apps/api':
         specifier: ^2
         version: 2.2.0
@@ -66,9 +63,6 @@ importers:
       '@repo/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@repo/utils':
-        specifier: workspace:^
-        version: link:../../packages/utils
       mongoose:
         specifier: ^8.9.5
         version: 8.9.5(socks@2.8.3)
@@ -178,8 +172,6 @@ importers:
       typescript:
         specifier: 5.5.4
         version: 5.5.4
-
-  packages/utils: {}
 
 packages:
 
