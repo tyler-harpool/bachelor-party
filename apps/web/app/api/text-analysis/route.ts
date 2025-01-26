@@ -41,7 +41,7 @@ export async function POST(request: Request) {
       throw new ApiError(
         HttpStatus.BAD_REQUEST,
         "VALIDATION_ERROR",
-        errorMessage
+        errorMessage,
       );
     }
 
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     const analyzer = new natural.SentimentAnalyzer(
       "English",
       natural.PorterStemmer,
-      "afinn"
+      "afinn",
     );
     const sentimentScore = analyzer.getSentiment(words);
 
@@ -96,6 +96,6 @@ function findMostFrequentWord(words: string[]): string | null {
 
   return Object.keys(frequencyMap).reduce(
     (a, b) => ((frequencyMap[a] || 0) > (frequencyMap[b] || 0) ? a : b),
-    ""
+    "",
   );
 }

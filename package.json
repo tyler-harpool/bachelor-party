@@ -7,7 +7,8 @@
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "clean": "turbo clean",
-    "check-types": "turbo check-types"
+    "check-types": "turbo check-types",
+    "shadcn": "pnpm --filter @repo/ui shadcn"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

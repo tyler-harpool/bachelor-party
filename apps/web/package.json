@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@repo/ui": "workspace:*",
+    "lucide-react": "^0.474.0",
     "mongoose": "^8.9.5",
     "natural": "^8.0.1",
     "next": "^15.1.0",
@@ -26,6 +27,8 @@
     "@types/node": "^20",
     "@types/react": "18.3.1",
     "@types/react-dom": "18.3.0",
+    "postcss": "^8.5.1",
+    "tailwindcss": "^3.4.17",
     "typescript": "5.5.4"
   }
 }
