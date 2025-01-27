@@ -138,6 +138,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 ### References
 
-- [Tauri Documentation](https://tauri.app/v2/docs/)
+- [Tauri Documentation](https://tauri.app/start/)
 - [Next.js Documentation](https://nextjs.org/docs/)
 - [TurboRepo Documentation](https://turbo.build/repo/docs)
