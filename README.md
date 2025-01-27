@@ -116,6 +116,15 @@ endpoint is:
 └── turbo.json     # TurboRepo configuration
 ```
 
+## Commands
+
+- **`pnpm dev`**: Start the development server for all apps.
+- **`pnpm lint`**: Lint the codebase using ESLint.
+- **`pnpm format`**: Format the codebase using Prettier.
+- **`pnpm clean`**: Remove all build artifacts.
+- **`pnpm check-types`**: Check TypeScript types.
+- **`pnpm shadcn`**: Exposes the Shadcn CLI for generating components.
+
 ## Contributing
 
 Contributions are welcome! Please fork the repository and create a pull request
