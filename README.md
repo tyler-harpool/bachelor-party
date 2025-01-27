@@ -1,84 +1,134 @@
-# Turborepo starter
+# Tauri v2 + Next.js Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+This repository contains the source code of the blog post [Tauri v2 with
+Next.js: A Monorepo
+Guide](https://melvinoostendorp.nl/blog/tauri-v2-nextjs-monorepo-guide). It
+demonstrates how to build a cross-platform application using Tauri v2 for
+desktop and mobile apps, and Next.js for web services.
 
-## Using this example
+## Features
 
-Run the following command:
+- **Next.js** for web and API services.
+- **Tauri v2** for building lightweight and performant native desktop and mobile
+  apps.
+- **Monorepo setup** powered by [TurboRepo](https://turbo.build/repo).
+- **Shared components** built with TailwindCSS, Shadcn, and Lucide for a
+  consistent UI across platforms.
+- **Reusable backend API** using Next.js API routes.
+- **Cross-platform deployment** for Web, iOS, Android, Windows, macOS, and
+  Linux.
 
-```sh
-npx create-turbo@latest
+## Getting Started
+
+### Prerequisites
+
+Ensure the following tools are installed:
+
+- **Node.js** (v22+)
+- **pnpm** (v8+)
+- **Rust** ([Install Rust](https://www.rust-lang.org/tools/install))
+- **Xcode** (for iOS development) _(Optional)_
+- **Android Studio** (for Android development) _(Optional)_
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Arbarwings/tauri-v2-nextjs-monorepo.git
+   cd tauri-v2-nextjs-monorepo
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   pnpm install
+   ```
+
+### Running the Apps
+
+#### Web (Next.js):
+
+```bash
+pnpm --filter web dev
 ```
 
-## What's inside?
+#### Desktop (Tauri):
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
+```bash
+pnpm --filter native dev
 ```
 
-### Develop
+#### Mobile (iOS/Android via Tauri):
 
-To develop all apps and packages, run the following command:
+Refer to the [Tauri Mobile
+Guide](https://tauri.app/develop/#using-xcode-or-android-studio) for additional
+setup.
 
+### Shared Components
+
+The `packages/ui` directory contains shared UI components, hooks, and utilities
+built with:
+
+- [TailwindCSS](https://tailwindcss.com/)
+- [Shadcn](https://ui.shadcn.com/)
+- [Lucide Icons](https://lucide.dev/)
+
+These components ensure consistency across web, desktop, and mobile platforms.
+
+## API Endpoints
+
+The backend API for text analysis is powered by Next.js API routes. The main
+endpoint is:
+
+- `POST /api/text-analysis`
+
+  - Request body: `{ "text": "Your text here" }`
+  - Response:
+
+    ```json
+    {
+      "success": true,
+      "data": {
+        "id": "unique-id",
+        "timestamp": "2025-01-27T12:00:00Z",
+        "analysis": {
+          "wordCount": 100,
+          "charCount": 500,
+          "mostFrequentWord": "example",
+          "sentimentScore": 1.5
+        }
+      }
+    }
+    ```
+
+## Folder Structure
+
+```plaintext
+.
+├── apps
+│   ├── web        # Next.js app for web and API
+│   ├── native     # Tauri app for desktop and mobile
+├── packages
+│   ├── ui         # Shared components, styles, and utilities
+│   ├── typescript-config # Shared TypeScript configurations
+│   ├── eslint-config # Shared ESLint configurations
+└── turbo.json     # TurboRepo configuration
 ```
-cd my-turborepo
-pnpm dev
-```
 
-### Remote Caching
+## Contributing
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Contributions are welcome! Please fork the repository and create a pull request
+with your changes.
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+## License
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+This project is licensed under the [MIT License](LICENSE).
 
-```
-cd my-turborepo
-npx turbo login
-```
+---
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+### References
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+- [Tauri Documentation](https://tauri.app/v2/docs/)
+- [Next.js Documentation](https://nextjs.org/docs/)
+- [TurboRepo Documentation](https://turbo.build/repo/docs)
