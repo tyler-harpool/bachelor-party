@@ -6,6 +6,7 @@ import {
   createResponse,
   createErrorResponse,
 } from "@repo/ui/lib/api";
+import { TextAnalysisResult } from "@repo/ui/types/text-analysis";
 
 // Define the schema for validating the input using Zod
 const InputSchema = z.object({
@@ -14,18 +15,6 @@ const InputSchema = z.object({
     .min(1, "Text input cannot be empty")
     .max(10000, "Text input exceeds the maximum allowed length"),
 });
-
-// Type for the API response
-type AnalysisResult = {
-  id: string;
-  timestamp: string;
-  analysis: {
-    wordCount: number;
-    charCount: number;
-    mostFrequentWord: string | null;
-    sentimentScore: number;
-  };
-};
 
 export async function POST(request: Request) {
   try {
@@ -67,7 +56,7 @@ export async function POST(request: Request) {
     // Find the most frequent word
     const mostFrequentWord = findMostFrequentWord(words);
 
-    const response: AnalysisResult = {
+    const response: TextAnalysisResult = {
       id: Math.random().toString(36).substring(7),
       timestamp: new Date().toISOString(),
       analysis: {
