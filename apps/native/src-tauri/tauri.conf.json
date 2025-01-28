@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "native",
+  "productName": "Tauri v2 Next.js Monorepo",
   "version": "0.1.0",
   "identifier": "com.my-tauri-nextjs-monorepo.app",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "native",
+        "title": "Tauri v2 Next.js Monorepo",
         "width": 800,
         "height": 600
       }
