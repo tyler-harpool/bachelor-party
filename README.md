@@ -119,6 +119,10 @@ endpoint is:
 ## Commands
 
 - **`pnpm dev`**: Start the development server for all apps.
+- **`pnpm tauri`**: Exposes the Tauri CLI for running the desktop or mobile app.
+- **`pnpm tauri dev`**: Start the Tauri desktop app in development mode.
+- **`pnpm tauri android dev`**: Start the Tauri android app in development mode.
+- **`pnpm tauri ios dev`**: Start the Tauri iOS app in development mode.
 - **`pnpm lint`**: Lint the codebase using ESLint.
 - **`pnpm format`**: Format the codebase using Prettier.
 - **`pnpm clean`**: Remove all build artifacts.
