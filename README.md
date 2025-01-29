@@ -1,4 +1,9 @@
-# Tauri v2 + Next.js Monorepo
+<h1 align="center">
+  <a href="https://github.com/Arbarwings/tauri-v2-nextjs-monorepo">
+    <img src="https://raw.githubusercontent.com/Arbarwings/tauri-v2-nextjs-monorepo/main/.github/tauri-nextjs.jpg" alt="Tauri v2 + Next.js Monorepo">
+  </a>
+  <br>Tauri v2 + Next.js Monorepo<br>
+</h1>
 
 This repository contains the source code of the blog post [Tauri v2 with
 Next.js: A Monorepo
