@@ -39,13 +39,20 @@ export function createResponse<T>(data: T, status = HttpStatus.OK): Response {
     data,
   };
 
-  return Response.json(body, {
+  const response = Response.json(body, {
     status,
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "no-store",
     },
   });
+  
+  // Add CORS headers to every response for Tauri native app compatibility
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
+  return response;
 }
 
 export function createErrorResponse(error: Error | ApiError): Response {
@@ -67,13 +74,20 @@ export function createErrorResponse(error: Error | ApiError): Response {
     },
   };
 
-  return Response.json(body, {
+  const response = Response.json(body, {
     status: apiError.statusCode,
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "no-store",
     },
   });
+  
+  // Add CORS headers to error responses as well
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  
+  return response;
 }
 
 export function isSuccessResponse<T, E>(

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import natural from "natural";
+import { NextResponse } from "next/server";
 import {
   ApiError,
   HttpStatus,
@@ -15,6 +16,19 @@ const InputSchema = z.object({
     .min(1, "Text input cannot be empty")
     .max(10000, "Text input exceeds the maximum allowed length"),
 });
+
+// Handle OPTIONS requests for CORS preflight
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Max-Age': '86400',
+    },
+  });
+}
 
 export async function POST(request: Request) {
   try {

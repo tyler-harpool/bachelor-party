@@ -6,15 +6,36 @@ import {
   CardTitle,
 } from "@repo/ui/components/card";
 import { Textarea } from "@repo/ui/components/textarea";
-import { Button } from "@repo/ui/components/button";
+import { Button, buttonVariants } from "@repo/ui/components/button";
 import { TextAnalysisResult } from "../types/text-analysis.js";
+import { cn } from "@repo/ui/lib/utils";
 
 function getSentimentText(score: number): string {
   if (score === 0) return "Neutral 😐";
   return score > 0 ? "Positive 🙂" : "Negative ☹️";
 }
 
-export const AnalyzeTextView = () => {
+// Add TypeScript declaration for Tauri's global object
+declare global {
+  interface Window {
+    __TAURI__?: {
+      window?: {
+        getCurrent: () => {
+          navigate: (path: string) => Promise<void>;
+        };
+      }
+    };
+    __APP_NAVIGATION__?: {
+      navigateTo: (route: string) => void;
+    };
+  }
+}
+
+interface AnalyzeTextViewProps {
+  isNative?: boolean;
+}
+
+export const AnalyzeTextView = ({ isNative = false }: AnalyzeTextViewProps) => {
   const [sourceText, setSourceText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<TextAnalysisResult | null>(null);
@@ -47,7 +68,24 @@ export const AnalyzeTextView = () => {
 
   return (
     <div className="container mx-auto p-4 max-w-2xl">
-      <h1 className="text-2xl font-bold mb-4">Text Analysis App</h1>
+      {/* Header/navigation is now handled by the Header component except for web mode */}
+      {!isNative && (
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">Text Analysis App</h1>
+          <button 
+            onClick={() => {
+              // Only for web navigation - native navigation is handled by the Header component
+              window.location.href = '/test-poll';
+            }}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "text-blue-600 border-blue-600 hover:bg-blue-50 hover:text-blue-800"
+            )}
+          >
+            View Poll System
+          </button>
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <Textarea
           value={sourceText}
