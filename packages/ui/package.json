@@ -4,6 +4,7 @@
   "type": "module",
   "private": true,
   "exports": {
+    "./components": "./src/components/index.ts",
     "./components/*": "./src/components/*.tsx",
     "./hooks/*": "./src/hooks/*.ts",
     "./lib/*": "./src/lib/*.ts",
