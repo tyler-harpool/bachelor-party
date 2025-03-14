@@ -1,72 +1,57 @@
-// bachelor-party-app/apps/packages/ui/components/header.tsx
-import { useNavigation, RouteKey } from "@repo/ui/navigation";
+import { cn } from "../lib/utils";
+import { buttonVariants } from "./button";
+import React from "react";
 
-interface NavLinkProps {
-  to: RouteKey;
-  children: React.ReactNode;
-  className?: string;
+interface HeaderProps {
+  currentRoute: string;
+  onNavigate: (route: string) => void;
+  isNative: boolean;
 }
 
-// NavLink component that works for both web and native
-function NavLink({ to, children, className = "" }: NavLinkProps) {
-  const { navigate, currentRoute, isNative } = useNavigation();
-
-  // Skip rendering auth links on native
-  if (isNative && (to === '/login' || to === '/signup')) {
-    return null;
-  }
-
-  const isActive = currentRoute === to;
-  const activeClass = isActive ? "font-bold" : "";
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigate(to);
-  };
-
-  // For web, use actual anchor tags (better for SEO and accessibility)
-  // For native, use div with onClick
-  if (isNative) {
-    return (
-      <div
-        onClick={handleClick}
-        className={`cursor-pointer px-4 py-2 ${activeClass} ${className}`}
-      >
-        {children}
-      </div>
-    );
-  }
+export function Header({ currentRoute, onNavigate, isNative }: HeaderProps) {
+  const isActive = (route: string) => currentRoute === route;
 
   return (
-    <a
-      href={to}
-      onClick={handleClick}
-      className={`px-4 py-2 ${activeClass} ${className}`}
-    >
-      {children}
-    </a>
-  );
-}
+    <header className="flex justify-between items-center p-4 border-b mb-4">
+      <h1 className="text-xl font-bold">Bachelor Party App</h1>
 
-export function Header() {
-  const { isNative } = useNavigation();
-
-  return (
-    <header className="bg-gray-800 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-xl font-bold">Bachelor Party App</h1>
-        <nav className="flex space-x-2">
-          <NavLink to="/">Home</NavLink>
-          <NavLink to="/test-poll">Poll System</NavLink>
-          <NavLink to="/native-poll">Native Poll</NavLink>
-          {!isNative && (
-            <>
-              <NavLink to="/login">Login</NavLink>
-              <NavLink to="/signup">Sign Up</NavLink>
-            </>
+      <nav className="flex gap-2">
+        <button
+          onClick={() => onNavigate('/')}
+          className={cn(
+            buttonVariants({ variant: isActive('/') ? "default" : "outline" }),
+            isActive('/') && "pointer-events-none"
           )}
-        </nav>
-      </div>
+        >
+          Text Analysis
+        </button>
+
+        <button
+          onClick={() => onNavigate('/test-poll')}
+          className={cn(
+            buttonVariants({ variant: isActive('/test-poll') ? "default" : "outline" }),
+            isActive('/test-poll') && "pointer-events-none"
+          )}
+        >
+          Poll System
+        </button>
+
+        {isNative && (
+          <button
+            onClick={() => onNavigate('/native-poll')}
+            className={cn(
+              buttonVariants({ variant: isActive('/native-poll') ? "default" : "outline" }),
+              isActive('/native-poll') && "pointer-events-none"
+            )}
+          >
+            Native Poll
+          </button>
+        )}
+      </nav>
+
+      {isNative && (
+        <div className="text-xs bg-yellow-100 rounded-full px-2 py-1">Native App</div>
+      )}
     </header>
   );
 }

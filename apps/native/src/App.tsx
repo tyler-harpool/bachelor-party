@@ -9,13 +9,13 @@ import { NativePollView } from "@repo/ui/components/native-poll-view";
 // Main App component with native-optimized routing
 function App() {
   const [currentRoute, setCurrentRoute] = useState("/");
-  
+
   // Native-specific navigation handler
   const handleNavigate = (route: string) => {
     console.log(`NATIVE: Navigating to ${route}`);
     setCurrentRoute(route);
   };
-  
+
   // Render the appropriate content based on the current route
   const renderContent = () => {
     console.log('Rendering content for route:', currentRoute);
@@ -32,13 +32,13 @@ function App() {
         return <AnalyzeTextView isNative={true} />;
     }
   };
-  
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Header 
-        currentRoute={currentRoute} 
-        onNavigate={handleNavigate} 
-        isNative={true} 
+      <Header
+        currentRoute={currentRoute}
+        onNavigate={handleNavigate}
+        isNative={true}
       />
       <main className="flex-1">
         {renderContent()}
