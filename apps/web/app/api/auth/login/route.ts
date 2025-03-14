@@ -1,15 +1,14 @@
 import { db } from '../../../../db/drizzle';
 import { usersTable } from '../../../../db/schema';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import {
   ApiError,
   HttpStatus,
-  createResponse,
-  createErrorResponse,
 } from "@repo/ui/lib/api";
+import { generateToken } from '../../../../lib/jwt';
 
 // Input validation schema
 const loginSchema = z.object({
@@ -20,8 +19,10 @@ const loginSchema = z.object({
 // POST handler - User login
 export async function POST(request: NextRequest) {
   try {
+    console.log('Login attempt started');
     // Parse request body
     const body = await request.json();
+    console.log('Request body:', { email: body.email, hasPassword: !!body.password });
     
     // Validate input
     const validatedData = loginSchema.safeParse(body);
@@ -35,19 +36,22 @@ export async function POST(request: NextRequest) {
     }
     
     // Find user by email
-    const user = await db
+    console.log('Looking up user with email:', validatedData.data.email);
+    const users = await db
       .select({
         id: usersTable.id,
-        firstName: usersTable.firstname,
-        lastName: usersTable.lastname,
+        firstname: usersTable.firstname,
+        lastname: usersTable.lastname,
         email: usersTable.email,
         password: usersTable.password,
       })
       .from(usersTable)
       .where(eq(usersTable.email, validatedData.data.email))
       .limit(1);
+      
+    console.log('User lookup result:', users.length > 0 ? 'User found' : 'User not found');
     
-    if (user.length === 0) {
+    if (users.length === 0) {
       throw new ApiError(
         HttpStatus.UNAUTHORIZED,
         "INVALID_CREDENTIALS",
@@ -55,10 +59,13 @@ export async function POST(request: NextRequest) {
       );
     }
     
+    const user = users[0];
+    console.log('Found user:', { id: user.id, email: user.email });
+    
     // Verify password
     const isPasswordValid = await bcrypt.compare(
       validatedData.data.password,
-      user[0].password
+      user.password
     );
     
     if (!isPasswordValid) {
@@ -69,19 +76,86 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Create user response (exclude password)
-    const { password, ...userWithoutPassword } = user[0];
+    console.log('Password verified successfully');
     
-    const response = createResponse({
-      user: userWithoutPassword,
-      message: 'Login successful'
+    // Create user response object (exclude password and map field names)
+    const userResponse = {
+      id: user.id,
+      firstName: user.firstname,
+      lastName: user.lastname,
+      email: user.email
+    };
+    
+    // Generate JWT token
+    console.log('Generating JWT token');
+    const token = await generateToken(userResponse);
+    console.log('Token generated successfully');
+    
+    // Create response data
+    const responseData = {
+      success: true,
+      data: {
+        user: userResponse,
+        token,
+        message: 'Login successful'
+      }
+    };
+    
+    // Create NextResponse directly to handle cookies
+    const response = new NextResponse(JSON.stringify(responseData), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      }
+    });
+    
+    // Set token in cookies for web clients
+    response.cookies.set({
+      name: 'auth_token',
+      value: token,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 60 * 60 * 24 // 24 hours
     });
     
     return response;
-    
   } catch (error) {
     console.error('Error during login:', error);
-    return createErrorResponse(error as Error);
+    
+    // Create error response data
+    const errorInfo = error instanceof ApiError ? error : new ApiError(
+      HttpStatus.INTERNAL_SERVER_ERROR,
+      "INTERNAL_SERVER_ERROR",
+      "An unexpected error occurred during login",
+      error
+    );
+    
+    const responseData = {
+      success: false,
+      error: {
+        code: errorInfo.code,
+        message: errorInfo.message,
+        details: errorInfo.details
+      }
+    };
+    
+    // Return error response
+    return new NextResponse(JSON.stringify(responseData), {
+      status: errorInfo.statusCode,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+      }
+    });
   }
 }
 

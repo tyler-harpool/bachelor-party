@@ -5,8 +5,11 @@ import { useAuth } from "../lib/auth";
 
 export default function NavHeader() {
   const { user, isAuthenticated, logout } = useAuth();
+  
+  console.log('NavHeader - Auth state:', { isAuthenticated, user });
 
   const handleLogout = () => {
+    console.log('Logging out...');
     logout();
     // No need to redirect, as the protected routes will do that automatically
   };
@@ -22,6 +25,12 @@ export default function NavHeader() {
         <nav>
           {isAuthenticated ? (
             <div className="flex items-center gap-4">
+              <Link 
+                href="/dashboard"
+                className="text-blue-600 hover:text-blue-800 font-medium"
+              >
+                Dashboard
+              </Link>
               <span className="text-gray-600">
                 Hi, {user?.firstName}
               </span>
